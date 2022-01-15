@@ -151,6 +151,11 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    _onChangeText(stateText)
+  },[stateText])
+
   useEffect(() => {
     // Update dataSource if props.predefinedPlaces changed
     setDataSource(buildRowsFromResults([]));
@@ -161,10 +166,16 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
       setStateText(address);
     },
     getAddressText: () => stateText,
-    blur: () => inputRef.current.blur(),
-    focus: () => inputRef.current.focus(),
-    isFocused: () => inputRef.current.isFocused(),
-    clear: () => inputRef.current.clear(),
+    blur: () =>  {
+      setListViewDisplayed(false)
+      inputRef.current?.blur()
+    },
+    focus: () => {
+      setListViewDisplayed(true)
+      inputRef.current?.focus()
+    },
+    isFocused: () => inputRef.current?.isFocused(),
+    clear: () => inputRef.current?.clear(),
     getCurrentLocation,
   }));
 
@@ -783,6 +794,8 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
 
     return null;
   };
+
+
 
   let {
     onFocus,
